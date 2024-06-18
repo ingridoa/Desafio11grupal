@@ -1,136 +1,99 @@
-// Definición de las clases
+import { Leon, Lobo, Oso, Aguila, Serpiente } from "./classes.js";
 
-class Animal {
-    constructor(nombre, edad, comentarios) {
-      this.nombre = nombre;
-      this.edad = edad;
-      this.comentarios = comentarios;
-      this.imagen = this.obtenerImagen();
-    }
-  
-    obtenerImagen() {
-      // Método para obtener la ruta de la imagen según el nombre del animal
-      switch (this.nombre) {
-        case 'Leon':
-          return './assets/imgs/Leon.png';
-        case 'Lobo':
-          return './assets/imgs/Lobo.jpg';
-        case 'Oso':
-          return './assets/imgs/Oso.jpg';
-        case 'Serpiente':
-          return './assets/imgs/Serpiente.jpg';
-        case 'Aguila':
-          return './assets/imgs/Aguila.png';
-        default:
-          return '';
-      }
-    }
-  }
-  
-  class Oso extends Animal {
-    constructor(nombre, edad, comentarios) {
-      super(nombre, edad, comentarios);
-    }
-  }
-  
-  class Serpiente extends Animal {
-    constructor(nombre, edad, comentarios) {
-      super(nombre, edad, comentarios);
-    }
-  }
-  
-  class Aguila extends Animal {
-    constructor(nombre, edad, comentarios) {
-      super(nombre, edad, comentarios);
-    }
-  }
-  
-  // Función autoejecutable IIFE
-  (() => {
-    // Obtener elementos del DOM
-    const btnRegistrar = document.getElementById('btnRegistrar');
-    const animalesContainer = document.getElementById('Animales');
-    const animalSelect = document.getElementById('animal');
-    const edadSelect = document.getElementById('edad');
-    const comentariosInput = document.getElementById('comentarios');
-  
-    // Evento para el botón de registrar
-    btnRegistrar.addEventListener('click', () => {
-      // Obtener datos del formulario
-      const nombre = animalSelect.value;
-      const edad = edadSelect.value;
-      const comentarios = comentariosInput.value;
-  
-      // Validar que todos los campos estén completos
-      if (nombre === 'Seleccione un animal' || edad === 'Seleccione un rango de años' || comentarios.trim() === '') {
-        alert('Por favor, complete todos los campos antes de agregar el animal.');
-        return;
-      }
-  
-      // Crear instancia del animal según la selección del usuario
-      let animal;
-      switch (nombre) {
-        case 'Leon':
-        case 'Lobo':
-        case 'Oso':
-          animal = new Oso(nombre, edad, comentarios);
+let animales = [];
+
+
+(async () => {
+  try {
+    const resp = await fetch("animales.json");
+    const data = await resp.json();
+    data.animales.forEach((elem) => {
+      switch (elem.name) {
+        case "Leon":
+          animales.push(new Leon(elem.name, elem.imagen, elem.sonido));
           break;
-        case 'Serpiente':
-          animal = new Serpiente(nombre, edad, comentarios);
+        case "Lobo":
+          animales.push(new Lobo(elem.name, elem.imagen, elem.sonido));
           break;
-        case 'Aguila':
-          animal = new Aguila(nombre, edad, comentarios);
+        case "Oso":
+          animales.push(new Oso(elem.name, elem.imagen, elem.sonido));
           break;
-        default:
-          console.error('Animal no reconocido');
-          return;
+        case "Serpiente":
+          animales.push(new Serpiente(elem.name, elem.imagen, elem.sonido));
+          break;
+        case "Aguila":
+          animales.push(new Aguila(elem.name, elem.imagen, elem.sonido));
+          break;
       }
-  
-      // Agregar el animal a la tabla
-      agregarAnimalTabla(animal);
-      resetFormulario();
     });
+  } catch (error) {
+    console.log(error);
+  }
+})();
+
+
+document.getElementById("animal").addEventListener("change", () => {
+  let seleccion = document.getElementById("animal").value;
+  let seleccionIndex = animales.findIndex(
+    (elem) => elem.getNombre() == seleccion
+  );
+  document.querySelector(
+    "#preview"
+  ).innerHTML = `<img src="assets/imgs/${animales[
+    seleccionIndex
+  ].getImg()}" style="height:200px" class="mx-auto d-block" >`;
   
-    // Función para agregar el animal a la tabla
-    function agregarAnimalTabla(animal) {
-      // Crear elementos HTML para mostrar el animal en la tabla
-      const divAnimal = document.createElement('div');
-      divAnimal.classList.add('animal-card', 'm-2');
-  
-      const img = document.createElement('img');
-      img.src = animal.imagen;
-      img.alt = animal.nombre;
-      img.classList.add('animal-img');
-      img.addEventListener('click', () => mostrarDetalle(animal));
-  
-      const nombre = document.createElement('h5');
-      nombre.textContent = animal.nombre;
-  
-      divAnimal.appendChild(img);
-      divAnimal.appendChild(nombre);
-  
-      animalesContainer.appendChild(divAnimal);
-    }
-  
-    // Función para mostrar el detalle del animal en una ventana modal
-    function mostrarDetalle(animal) {
-      // Lógica para mostrar la ventana modal con el detalle del animal
-      const modalBody = document.querySelector('.modal-body');
-      modalBody.innerHTML = `
-        <p><strong>Nombre:</strong> ${animal.nombre}</p>
-        <p><strong>Edad:</strong> ${animal.edad}</p>
-        <p><strong>Comentarios:</strong> ${animal.comentarios}</p>
-      `;
-  
-      // Mostrar la ventana modal
-      $('#exampleModal').modal('show');
-    }
-  
-    // Función para limpiar los campos del formulario después de agregar un animal
-    function resetFormulario() {
-      animalSelect.selectedIndex = 0;
-      edadSelect.selectedIndex = 0;
-      comentariosInput.value = '';
-    }
-  })();
-  
+});
+
+document.getElementById("btnRegistrar").addEventListener("click", () => {
+  let alimalito = document.getElementById("animal").value;
+  let alimalitoIndex = animales.findIndex(
+    (elem) => elem.getNombre() == alimalito
+  );
+  if (
+    document.getElementById("edad").value == "Seleccione un rango de años" ||
+    document.getElementById("comentarios").value == "" ||
+    document.getElementById("animal").value == "Seleccione un animal"
+  ) {
+    alert("Debe completar todos los campos");
+  } else if (animales[alimalitoIndex]._comentarios == "") {
+    animales[alimalitoIndex]._edad = document.getElementById("edad").value;
+    animales[alimalitoIndex]._comentarios =
+      document.getElementById("comentarios").value;
+    document.querySelector(
+      "#Animales"
+    ).innerHTML += `<img id="modalClick" src="assets/imgs/${animales[
+      alimalitoIndex
+    ].getImg()}" style="height:200px" class="${alimalito} mx-auto d-block" data-toggle="modal" data-target="#exampleModal" >`;
+  } else {
+    alert("Animal ya registrado");
+  }
+});
+
+
+document.getElementById("Animales").addEventListener("click", (event) => {
+  const clickedElement = event.target;
+  if (clickedElement.id === "modalClick") {
+    cargarModal(event);
+  }
+});
+
+const cargarModal = (event) => {
+  const clickedImage = event.target;
+  const animalClass = clickedImage.classList[0];
+  const animalIndex = animales.findIndex(
+    (elem) => elem.getNombre() === animalClass
+  );
+  document.querySelector(
+    ".modal-body"
+  ).innerHTML = `<img src="assets/imgs/${animales[
+    animalIndex
+  ].getImg()}" style="height:200px" class="mx-auto d-block">
+  <p class="text-white text-center">${animales[animalIndex].getEdad()}</p>
+  <p class="text-white text-center">Comentarios</p>
+  <p class="text-white text-center">${animales[animalIndex]._comentarios}</p>`;
+  document.querySelector("audio").src = `assets/sounds/${animales[
+    animalIndex
+  ].getSonido()}`;
+  document.querySelector("audio").play();
+};
