@@ -1,8 +1,7 @@
 - [Desafio Animales en investigación](#desafio-animales-en-investigación)
-  - [Requerimientos](#requerimientos)
+  - [Integrantes:](#integrantes)
 
-# Desafio Animales en investigación
- 
+
 ## Requerimientos 
 ---
 -[Crear las clases representadas en el diagrama implementando la herencia indicada].
@@ -15,15 +14,19 @@
 
 -[] Utilizar la manipulación del DOM para mostrar en la tabla los animales registrados con el formulario.
 
-
--Tres Guiones crean un separador \<hr>
+-[] Validar que el usuario haya asignado todos los datos del animal antes de que éste sea agregado a la tabla. (Opcional).
+-[] Devolver el formulario en un estado inicial luego de registrar a cada animal. (Opcional).
+-[] Programar la interacción del botón de audio, en donde deberás reproducir el sonido del animal en el sitio web. (Opcional).
+-[] Mostrar el detalle de cada animal en una ventana modal al ser presionada su imagen. 
+\<hr>
 
 ![Imagen](http://127.0.0.1:5500/assets/imgs/Leon.png)
 
-[Ir a Página de Animales](http://127.0.0.1:5500/index.html)
+# Desafio Animales en investigación
 
-**Este** es *uno* de los _primeros_ proyectos dentro de los __programas__ de Talento __*Digital*__ Fullstack ***Javascript*** 
-Aca tengo un párrafo nuevo.
+[Ir a Página Animales en investigación](http://127.0.0.1:5500/index.html)
 
-
-[]
+**Este** es *uno* de los _Desafios Grupales_ Usando herramientas ***Javascript***  
+__TALENTO DIGITAL__ 
+## Integrantes:
+ __ Matias Carrion, __Carlos , __Renata , __Ingrid Oñate, __Estefani
